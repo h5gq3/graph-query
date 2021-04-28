@@ -18,4 +18,4 @@ many=@ud                                        ::  cutoff value of amount of no
 
 ## example query
 
-`+graph-query [~bitbet-bolbel %urbit-community] ~ `~tinnus-napbus `~2021.4.28 `~2021.4.10 100`
+``+graph-query [~bitbet-bolbel %urbit-community] ~ `~tinnus-napbus `~2021.4.28 `~2021.4.10 100``
