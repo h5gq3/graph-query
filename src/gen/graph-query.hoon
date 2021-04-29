@@ -1,6 +1,6 @@
 /-  g=graph-store
 /-  metadata=metadata-store
-/+  gra=graph
+/+  gra=graph-query
 
 :-  %say
 |=  $:  [now=@da * bec=beak]
