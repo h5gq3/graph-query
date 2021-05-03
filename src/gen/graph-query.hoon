@@ -46,17 +46,18 @@ channel-reducer
 ::
 ++  matched-contents-reducer
   |=  i=node:g
+  ?>  ?=(%& -.post.i)
   %+  reel
   (limo ~[get-match get-text-content])
-  |=  [f=$-(content:g ?(~ [~ content:g])) l=_contents.post.i]
+  |=  [f=$-(content:g ?(~ [~ content:g])) l=_contents.p.post.i]
   (murn l f)
 ::
 ++  query-reducer
   |=  [ship=@p name=cord]
   =/  search-f=query-filter  ?~(sq ~ `|=(i=node:g ?.(!=(~ (matched-contents-reducer i)) ~ `i)))
-  =/  author-f=query-filter  ?~(author ~ `|=(i=node:g ?.(=((need author) author.post.i) ~ `i)))
-  =/  before-f=query-filter  ?~(before ~ `|=(i=node:g ?.((lth time-sent.post.i (need before)) ~ `i)))
-  =/  after-f=query-filter  ?~(after ~ `|=(i=node:g ?.((gth time-sent.post.i (need after)) ~ `i)))
+  =/  author-f=query-filter  ?~(author ~ `|=(i=node:g ?.(=((need author) ?>(?=(%& -.post.i) author.p.post.i)) ~ `i)))
+  =/  before-f=query-filter  ?~(before ~ `|=(i=node:g ?.((lth ?>(?=(%& -.post.i) time-sent.p.post.i) (need before)) ~ `i)))
+  =/  after-f=query-filter  ?~(after ~ `|=(i=node:g ?.((gth ?>(?=(%& -.post.i) time-sent.p.post.i) (need after)) ~ `i)))
   =/  composite-f=(list $-(node:g ?(~ [~ node:g])))
   %+  murn
   `(list query-filter)`~[search-f after-f before-f author-f]
