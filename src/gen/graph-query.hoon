@@ -58,9 +58,10 @@ channel-reducer
   =/  author-f=query-filter  ?~(author ~ `|=(i=node:g ?.(=((need author) ?>(?=(%& -.post.i) author.p.post.i)) ~ `i)))
   =/  before-f=query-filter  ?~(before ~ `|=(i=node:g ?.((lth ?>(?=(%& -.post.i) time-sent.p.post.i) (need before)) ~ `i)))
   =/  after-f=query-filter  ?~(after ~ `|=(i=node:g ?.((gth ?>(?=(%& -.post.i) time-sent.p.post.i) (need after)) ~ `i)))
+  =/  deleted-f=query-filter  `|=(i=node:g ?.(?=(%& -.post.i) ~ `i))
   =/  composite-f=(list $-(node:g ?(~ [~ node:g])))
   %+  murn
-  `(list query-filter)`~[search-f after-f before-f author-f]
+  `(list query-filter)`~[search-f after-f before-f author-f deleted-f]
   |=(i=query-filter ?~(i ~ i))
   ::
   %+  reel
