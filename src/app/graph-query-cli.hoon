@@ -65,6 +65,7 @@
   ?-  -.command
       %run-query  run-query:qo
       ::
+      ::
       %select-resource  (put-resource:build-query-generator-input:qo command)
       ::
       %search-text  (put-search-text:build-query-generator-input:qo command)
@@ -75,7 +76,8 @@
       ::
       %after  (put-after:build-query-generator-input:qo command)
   ==
-  [cards this(state state)]
+  =.  state  state
+  [cards this]
 ::
 ++  can-connect
   |=  sole-id=@ta
