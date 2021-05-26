@@ -15,6 +15,7 @@
 +$  command
   $%
       [%run-query ~]
+      [%show-resource ~]
       [%select-resource id=@ud]
       [%search-text text=tape]
       [%author author=(unit @p)]
@@ -65,6 +66,7 @@
   ?-  -.command
       %run-query  run-query:qo
       ::
+      %show-resource  joined-groups:render:qo
       ::
       %select-resource  (put-resource:build-query-generator-input:qo command)
       ::
@@ -100,14 +102,15 @@
   %+  pick
     ;~  pose
       (cold [%run-query ~] (just 'r'))
+      (cold [%show-resource ~] (just 'g'))
       (stag %select-resource dem)
     ==
     ::
     ;~  pose
       (stag %search-text ;~(pfix fas (star next)))
       (stag %author ;~(pfix sig (punt fed:ag)))
-      (stag %before ;~(pfix (just 'b') (cook |=(i=tape (slav %da (crip i))) (star next))))
-      (stag %after ;~(pfix (just 'a') (cook |=(i=tape (slav %da (crip i))) (star next))))
+      (stag %before ;~(pfix (just 'b') (cook year when:so)))
+      (stag %after ;~(pfix (just 'a') (cook year when:so)))
     ==
 ::
 ++  run-query
@@ -144,6 +147,7 @@
                 resource.query-input  (~(got by joined-groups-map) +.i)
           ==
         ~
+      ::
     ++  put-search-text
       |=  i=[%search-text tape]
       ^-  (quip card _state)
@@ -201,12 +205,17 @@
   ++  start  [%sole %txt "graph-store query. press ? for help (TODO)"]
   ::
   ++  joined-groups
+    ^-  (quip card _state)
+    :-
+    :~
+    :+  %shoe  ~
     :+  %sole  %mor
     =-  (turn - (lead %txt))
     ^-  wall
     %+  turn  joined-groups-listmap
     |=  i=[id=@ud =resource:resource]
     "{(scow %ud id.i)}   {(scow %p -.resource.i)}/{(scow %tas +.resource.i)}"
-  ::
+    ==
+    state
   --
 --
