@@ -76,7 +76,6 @@
       ::
       %after  (put-after:build-query-generator-input:qo command)
   ==
-  =.  state  state
   [cards this]
 ::
 ++  can-connect
