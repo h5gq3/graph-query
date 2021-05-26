@@ -112,12 +112,13 @@
 ::
 ++  run-query
   ^-  (quip card _state)
+  =/  posts-from-gen-call
+    =<  +
+        %-  +:query
+        [[now:bowl eny:bowl byk:bowl] query-input.+.state ~]
   :_
     %=  state
-          posts
-            =<  +
-            %-  +:query
-            [[now:bowl eny:bowl byk:bowl] query-input.+.state ~]
+          posts  posts-from-gen-call
         ==
   :~
   :+  %shoe  ~
@@ -125,7 +126,7 @@
     =-  (turn - (lead %txt))
     ^-  wall
     %-  zing
-    %+  turn  posts
+    %+  turn  posts-from-gen-call
     |=  i=(list node:g)
       %+  turn  i
       |=  i=node:g
