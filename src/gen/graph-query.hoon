@@ -18,7 +18,7 @@
 :-  %noun
 =*  our  p.bec
 |^
-channel-reducer
+(skip channel-reducer |=(i=[resource:g (list node:g)] =(~ +.i)))
 ::
 +$  query-filter  (unit $-(node:g ?(~ [~ node:g])))
 ::
@@ -70,9 +70,11 @@ channel-reducer
   (murn l f)
 ::
 ++  channel-reducer
+  ^-  (list [resource:g (list node:g)])
+  ;;  (list [resource:g (list node:g)])
   =/  group-channels  .^(associations:metadata %gx /(scot %p our)/metadata-store/(scot %da now)/app-name/graph/noun)
   =/  joined-channels  q:.^(update:g %gx /(scot %p our)/graph-store/(scot %da now)/keys/noun)
-  ?>  ?=([%keys *] joined-channels) 
+  ?>  ?=([%keys *] joined-channels)
   %+  skip
   %+  turn  ~(tap by group-channels)
   |=  i=[p=md-resource:metadata q=association:metadata]
@@ -80,7 +82,7 @@ channel-reducer
           (~(has in resources.joined-channels) resource.p.i)
       ==
       ~
-  (query-reducer [entity.resource.p.i `cord`name.resource.p.i])
-  |=  i=*
+  [`resource:g`[entity.resource.p.i name.resource.p.i] (query-reducer [entity.resource.p.i `cord`name.resource.p.i])]
+  |=  i=?(~ [resource:g *])
   =(~ i)
 --

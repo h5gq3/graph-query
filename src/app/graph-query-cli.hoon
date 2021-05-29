@@ -6,7 +6,7 @@
 +$  state-0
   $:  %0
       query-input=gen-input
-      posts=(list (list node:g))
+      posts=(list [resource:g (list node:g)])
   ==
 ::
 +$  gen-input  [=resource:resource search-text=(unit tape) author=(unit @p) before=(unit @da) after=(unit @da) many=_420 ~]
@@ -125,17 +125,23 @@
         ==
   :~
   :+  %shoe  ~
-  :+  %sole  %mor
-    =-  (turn - (lead %txt))
-    ^-  wall
+  :^  %table
+  ~[t+'ship' t+'date' t+'post' t+'channel']
+  ~[8 27 35 12]
+  ^-  (list (list dime))
     %-  zing
     %+  turn  posts-from-gen-call
-    |=  i=(list node:g)
-      %+  turn  i
-      |=  i=node:g
-      =/  text  (get-text-content:destructure-node i)
-      ?~  text  ~
-      `tape`i.text
+    |=  i=[resource:g (list node:g)]
+      %+  turn  +.i
+        |=  i=node:g
+        =/  text  (get-text-content:destructure-node i)
+        =/  table-text
+        ?~  text  ~
+        ?.  (gth (lent text) 1)
+        (crip i.text)
+        %-  crip
+        ;;(tape (reel `(list tape)`(turn text |=(i=tape (weld i "\0a"))) weld))
+        ~[p+(get-author:destructure-node i) da+(get-time-sent:destructure-node i) t+table-text t+(get-channel:destructure-node -:^i)]
   ==
 ::
 ++  build-query-generator-input
@@ -193,10 +199,28 @@
     ++  get-text-content
       |=  i=node:g
       ?>  ?=(%& -.post.i)
-      %+  turn  contents.p.post.i
+      %+  turn  (skim contents.p.post.i |=(i=content:g |(?=([%text *] i) ?=([%url *] i))))
       |=  i=content:g
-      ?>  ?=([%text *] i)
-      (trip text.i)
+      ?+  -.i  ~
+        %text
+          ?>  ?=([%text *] i)  (trip text.i)
+        %url
+          ?>  ?=([%url *] i)  (trip url.i)
+      ==
+    ++  get-author
+      |=  i=node:g
+      ?>  ?=(%& -.post.i)
+      author.p.post.i
+    ::
+    ++  get-time-sent
+      |=  i=node:g
+      ?>  ?=(%& -.post.i)
+      =/  time-sent  time-sent.p.post.i
+      (sub time-sent (mod time-sent ~s1))
+    ::
+    ++  get-channel
+      |=  i=resource:g
+      (crip "{(scow %p entity.i)}/{(scow %tas name.i)}")
   --
 ::
 ++  render
