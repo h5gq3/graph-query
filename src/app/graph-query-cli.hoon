@@ -7,6 +7,7 @@
   $:  %0
       query-input=gen-input
       posts=(list [resource:g (list node:g)])
+      render-input-state=[resource=tape text=tape author=tape before=tape after=tape]
   ==
 ::
 +$  gen-input  [=resource:resource search-text=(unit tape) author=(unit @p) before=(unit @da) after=(unit @da) many=_420 ~]
@@ -149,39 +150,70 @@
     ++  put-resource
       |=  i=[%select-resource @ud]
       ^-  (quip card _state)
+      =/  current-resource  (~(got by joined-groups-map) +.i)
+      =/  render-current-resource  "=group {(scow %p entity.current-resource)}/{(scow %tas name.current-resource)}   "
       :_  %=  state
-                resource.query-input  (~(got by joined-groups-map) +.i)
+                resource.query-input  current-resource
+                resource.render-input-state  render-current-resource
           ==
-        ~
+      :~
+      :+  %shoe  ~
+      :+  %sole  %txt
+      render-current-resource
+      ==
       ::
     ++  put-search-text
       |=  i=[%search-text tape]
       ^-  (quip card _state)
+      =/  render-current-text  "=text {+.i}   "
       :_  %=  state
                 search-text.query-input  `+.i
+                text.render-input-state  render-current-text
           ==
-        ~
+      :~
+      :+  %shoe  ~
+      :+  %sole  %txt
+      render-current-text
+      ==
     ++  put-author
       |=  i=[%author (unit @p)]
       ^-  (quip card _state)
+      =/  render-current-author  "=author {(scow %p (need +.i))}   "
       :_  %=  state
                 author.query-input  +.i
+                author.render-input-state  render-current-author
           ==
-        ~
+      :~
+      :+  %shoe  ~
+      :+  %sole  %txt
+      render-current-author
+      ==
     ++  put-before
       |=  i=[%before @da]
       ^-  (quip card _state)
+      =/  render-current-before  "=before {(scow %da +.i)}   "
       :_  %=  state
                 before.query-input  `+.i
+                before.render-input-state  render-current-before
           ==
-        ~
+      :~
+      :+  %shoe  ~
+      :+  %sole  %txt
+      render-current-before
+      ==
     ++  put-after
       |=  i=[%after @da]
       ^-  (quip card _state)
+      =/  render-current-after  "=after {(scow %da +.i)}   "
       :_  %=  state
                 after.query-input  `+.i
+                after.render-input-state  render-current-after
           ==
-        ~
+      :~
+      :+  %shoe  ~
+      :+  %sole  %txt
+      render-current-after
+      ==
   --
 ::
 ++  joined-groups-list
@@ -241,5 +273,6 @@
     "{(scow %ud id.i)}   {(scow %p -.resource.i)}/{(scow %tas +.resource.i)}"
     ==
     state
+  ::
   --
 --
