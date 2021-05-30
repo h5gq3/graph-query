@@ -16,6 +16,7 @@
 +$  command
   $%
       [%run-query ~]
+      [%show-options ~]
       [%show-resource ~]
       [%select-resource id=@ud]
       [%search-text text=tape]
@@ -67,6 +68,8 @@
   ?-  -.command
       %run-query  run-query:qo
       ::
+      %show-options  render-options:render:qo
+      ::
       %show-resource  joined-groups:render:qo
       ::
       %select-resource  (put-resource:build-query-generator-input:qo command)
@@ -103,11 +106,12 @@
   %+  pick
     ;~  pose
       (cold [%run-query ~] (just 'r'))
+      (cold [%show-options ~] wut)
       (cold [%show-resource ~] (just 'g'))
-      (stag %select-resource dem)
     ==
     ::
     ;~  pose
+      (stag %select-resource dem)
       (stag %search-text ;~(pfix fas (star next)))
       (stag %author ;~(pfix sig (punt fed:ag)))
       (stag %before ;~(pfix (just 'b') (cook year when:so)))
@@ -258,7 +262,28 @@
 ++  render
   |%
   ::
-  ++  start  [%sole %txt "graph-store query. press ? for help (TODO)"]
+  ++  start  [%sole %txt "graph-store query. press ? to see query options"]
+  ::
+  ++  render-options
+    ^-  (quip card _state)
+    :-
+    :~
+    :+  %shoe  ~
+    :+  %sole  %mor
+    =-  (turn - (lead %txt))
+    :~
+    ""
+    "g   show groups"
+    "1   select a group to query from and press enter"
+    "/   enter a search term"
+    "~   enter ship to see all posts from this ship"
+    "b   enter a date to see posts before that date. date must be in @da aura without a leading sig. e.g. 2021.5.30 or 2021.5.30..13.03.00"
+    "a   enter a date to see posts after that date. date must be in @da aura without a leading sig. e.g. 2021.5.30 or 2021.5.30..13.03.00"
+    "r   run query"
+    ""
+    ==
+    ==
+    state
   ::
   ++  joined-groups
     ^-  (quip card _state)
