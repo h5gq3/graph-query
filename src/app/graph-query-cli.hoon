@@ -16,6 +16,7 @@
 +$  command
   $%
       [%run-query ~]
+      [%clear-query-state ~]
       [%show-options ~]
       [%show-resource ~]
       [%select-resource id=@ud]
@@ -68,6 +69,8 @@
   ?-  -.command
       %run-query  run-query:qo
       ::
+      %clear-query-state  clear-query-state:qo
+      ::
       %show-options  render-options:render:qo
       ::
       %show-resource  joined-groups:render:qo
@@ -106,6 +109,7 @@
   %+  pick
     ;~  pose
       (cold [%run-query ~] (just 'r'))
+      (cold [%clear-query-state ~] hep)
       (cold [%show-options ~] wut)
       (cold [%show-resource ~] (just 'g'))
     ==
@@ -148,6 +152,11 @@
         ;;(tape (reel `(list tape)`(turn text |=(i=tape (weld i "\0a"))) weld))
         ~[p+(get-author:destructure-node i) da+(get-time-sent:destructure-node i) t+table-text t+(get-channel:destructure-node -:^i)]
   ==
+::
+++  clear-query-state
+  ^-  (quip card _state)
+  :_  =.  state  *state-0  state
+  [%shoe ~ %sole %txt "query cleared"]~
 ::
 ++  build-query-generator-input
   |%
@@ -280,6 +289,7 @@
     "b   enter a date to see posts before that date. date must be in @da aura without a leading sig. e.g. 2021.5.30 or 2021.5.30..13.03.00"
     "a   enter a date to see posts after that date. date must be in @da aura without a leading sig. e.g. 2021.5.30 or 2021.5.30..13.03.00"
     "r   run query"
+    "-   clear query"
     ""
     ==
     ==
