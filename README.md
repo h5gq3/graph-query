@@ -5,7 +5,7 @@
 `rsync -av src/ $URBIT_SHIP_DIR/home/`
 or your specified desk instead of `home`
 
-## input arguments
+## generator input arguments
 
 ```
 resource=resource:g                             ::  group to query from
@@ -16,6 +16,12 @@ after=(unit @da)                                ::  cutoff posts before a timepo
 many=@ud                                        ::  cutoff value of amount of nodes to query to back in time
 ```
 
-## example query
+## example query with generator
 
 ``+graph-query [~bitbet-bolbel %urbit-community] ~ `~tinnus-napbus `~2021.4.28 `~2021.4.10 100``
+
+## shoe app usage
+
+make sure to `|commit %home` (or other specified desk) inside dojo and then `|start %graph-query-cli`
+
+then press `?` to see query options
