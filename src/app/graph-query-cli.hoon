@@ -163,6 +163,8 @@
     ++  put-resource
       |=  i=[%select-resource @ud]
       ^-  (quip card _state)
+      :: if invalid group id input, don't proceed
+      ?:  (gth +.i (lent joined-groups-list))  [[%shoe ~ %sole %txt "invalid group id"]~ state]
       =/  current-resource  (~(got by joined-groups-map) +.i)
       =/  render-current-resource  "=group {(scow %p entity.current-resource)}/{(scow %tas name.current-resource)}   "
       :_  %=  state
