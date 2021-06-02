@@ -6,6 +6,7 @@
 +$  state-0
   $:  %0
       query-input=gen-input
+      dms-disabled=?
       posts=(list [resource:g (list node:g)])
       render-input-state=[resource=tape text=tape author=tape before=tape after=tape]
   ==
@@ -16,10 +17,12 @@
 +$  command
   $%
       [%run-query ~]
+      [%show-query-state ~]
       [%clear-query-state ~]
       [%show-options ~]
       [%show-resource ~]
       [%select-resource id=@ud]
+      [%disable-dms ~]
       [%search-text text=tape]
       [%author author=(unit @p)]
       [%after after=@da]
@@ -69,6 +72,8 @@
   ?-  -.command
       %run-query  run-query:qo
       ::
+      %show-query-state  render-query-state:render:qo
+      ::
       %clear-query-state  clear-query-state:qo
       ::
       %show-options  render-options:render:qo
@@ -76,6 +81,8 @@
       %show-resource  joined-groups:render:qo
       ::
       %select-resource  (put-resource:build-query-generator-input:qo command)
+      ::
+      %disable-dms  disable-dms:qo
       ::
       %search-text  (put-search-text:build-query-generator-input:qo command)
       ::
@@ -109,9 +116,11 @@
   %+  pick
     ;~  pose
       (cold [%run-query ~] (just 'r'))
+      (cold [%show-query-state ~] dot)
       (cold [%clear-query-state ~] hep)
       (cold [%show-options ~] wut)
       (cold [%show-resource ~] (just 'g'))
+      (cold [%disable-dms ~] (just 'd'))
     ==
     ::
     ;~  pose
@@ -135,8 +144,8 @@
   :~
   :+  %shoe  ~
   :^  %table
-  ~[t+'ship' t+'date' t+'post' t+'channel']
-  ~[8 27 35 12]
+  ~[t+'ship' t+'date' t+'post' t+'index' t+'channel']
+  ~[8 27 35 60 30]
   ^-  (list (list dime))
     %-  zing
     %+  turn  posts-from-gen-call
@@ -150,13 +159,18 @@
         (crip i.text)
         %-  crip
         ;;(tape (reel `(list tape)`(turn text |=(i=tape (weld i "\0a"))) weld))
-        ~[p+(get-author:destructure-node i) da+(get-time-sent:destructure-node i) t+table-text t+(get-channel:destructure-node -:^i)]
+        ~[p+(get-author:destructure-node i) da+(get-time-sent:destructure-node i) t+table-text ud+(get-index:destructure-node i) t+(get-channel:destructure-node -:^i)]
   ==
+::
+++  disable-dms
+  ^-  (quip card _state)
+  :_  state(dms-disabled &)
+  ~
 ::
 ++  clear-query-state
   ^-  (quip card _state)
   :_  =.  state  *state-0  state
-  [%shoe ~ %sole %txt "query cleared"]~
+  [%shoe ~ %sole %txt "query cleared\0a"]~
 ::
 ++  build-query-generator-input
   |%
@@ -265,6 +279,11 @@
       =/  time-sent  time-sent.p.post.i
       (sub time-sent (mod time-sent ~s1))
     ::
+    ++  get-index
+      |=  i=node:g
+      ?>  ?=(%& -.post.i)
+      -.index.p.post.i
+    ::
     ++  get-channel
       |=  i=resource:g
       (crip "{(scow %p entity.i)}/{(scow %tas name.i)}")
@@ -273,7 +292,7 @@
 ++  render
   |%
   ::
-  ++  start  [%sole %txt "graph-store query. press ? to see query options"]
+  ++  start  [%sole %txt "\0agraph-store query: build and run a query by composing query options. press ? to see query options\0a"]
   ::
   ++  render-options
     ^-  (quip card _state)
@@ -283,17 +302,35 @@
     :+  %sole  %mor
     =-  (turn - (lead %txt))
     :~
-    ""
-    "g   show groups"
+    "\0ag   show groups"
     "1   select a group to query from and press enter"
-    "/   enter a search term"
-    "~   enter ship to see all posts from this ship"
-    "b   enter a date to see posts before that date. date must be in @da aura without a leading sig. e.g. 2021.5.30 or 2021.5.30..13.03.00"
-    "a   enter a date to see posts after that date. date must be in @da aura without a leading sig. e.g. 2021.5.30 or 2021.5.30..13.03.00"
+    "d   exclude direct messages in query, by default included"
+    "/   enter a search term after /, e.g. /sample"
+    "~   enter ship to see all posts from this ship, e.g. ~sonsum"
+    "b   enter a date to see posts before that date. date must be in format bYYYY.M.D, e.g. b2021.5.30 or b2020.11.5..13.03.00"
+    "a   enter a date to see posts after that date. date must be in format aYYYY.M.D, e.g. a2021.5.30 or a2020.11.5..13.03.00"
     "r   run query"
-    "-   clear query"
-    ""
+    ".   show currently applied query options"
+    "-   clear query\0a"
     ==
+    ==
+    state
+  ::
+  ++  render-query-state
+    ^-  (quip card _state)
+    :-
+    :~
+    :+  %shoe  ~
+    :+  %sole  %txt
+    ;:  weld
+      "\0a"
+      resource.render-input-state
+      text.render-input-state
+      author.render-input-state
+      before.render-input-state
+      after.render-input-state
+      "\0a"
+      ==
     ==
     state
   ::
@@ -305,9 +342,15 @@
     :+  %sole  %mor
     =-  (turn - (lead %txt))
     ^-  wall
-    %+  turn  joined-groups-listmap
-    |=  i=[id=@ud =resource:resource]
-    "{(scow %ud id.i)}   {(scow %p -.resource.i)}/{(scow %tas +.resource.i)}"
+    ?.  =(& dms-disabled)
+      :: dms enabled
+      %+  turn  joined-groups-listmap
+      |=  i=[id=@ud =resource:resource]
+      "{(scow %ud id.i)}   {(scow %p -.resource.i)}/{(scow %tas +.resource.i)}\0a"
+      :: dms disabled
+      %+  turn  (skip joined-groups-listmap |=(i=[@ =resource:resource] =("dm" `tape`(scag 2 (scow %tas name.resource.i)))))
+      |=  i=[id=@ud =resource:resource]
+      "{(scow %ud id.i)}   {(scow %p -.resource.i)}/{(scow %tas +.resource.i)}\0a"
     ==
     state
   ::
