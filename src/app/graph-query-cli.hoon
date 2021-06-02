@@ -165,7 +165,7 @@
 ++  disable-dms
   ^-  (quip card _state)
   :_  state(dms-disabled &)
-  ~
+  [%shoe ~ %sole %txt "direct messages disabled\0a"]~
 ::
 ++  clear-query-state
   ^-  (quip card _state)
