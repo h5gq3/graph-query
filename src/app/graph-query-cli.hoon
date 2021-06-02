@@ -6,7 +6,7 @@
 +$  state-0
   $:  %0
       query-input=gen-input
-      dms-disabled=?
+      dms-disabled=_|
       posts=(list [resource:g (list node:g)])
       render-input-state=[resource=tape text=tape author=tape before=tape after=tape]
   ==
