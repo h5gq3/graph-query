@@ -10,7 +10,7 @@
         author=(unit @p)                                ::  author of post
         before=(unit @da)                               ::  cutoff posts after a timepoint
         after=(unit @da)                                ::  cutoff posts before a timepoint
-        many=@ud                                        ::  cutoff value of amount of nodes to query to back in time
+        page=@ud                                        ::  cutoff value of amount of nodes to query to back in time
         ~
         ==
         ~
@@ -27,7 +27,7 @@
   =/  graph-srcy  .^(update:g %gx /(scot %p our)/graph-store/(scot %da now)/graph/(scot %p ship)/(scot %tas name)/noun)
   =/  graph
   ?>  ?=([%add-graph *] q.graph-srcy)  graph.q.graph-srcy
-  (tap-deep-time:gra [*index:g graph many])
+  (tap-deep-time:gra [*index:g graph page])
 ::
 ++  get-text-content
   |=  c=content:g

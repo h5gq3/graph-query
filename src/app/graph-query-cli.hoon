@@ -8,15 +8,17 @@
       query-input=gen-input
       dms-disabled=_|
       posts=(list [resource:g (list node:g)])
+      current-page=@ud
       render-input-state=[resource=tape text=tape author=tape before=tape after=tape]
   ==
 ::
-+$  gen-input  [=resource:resource search-text=(unit tape) author=(unit @p) before=(unit @da) after=(unit @da) many=_420 ~]
++$  gen-input  [=resource:resource search-text=(unit tape) author=(unit @p) before=(unit @da) after=(unit @da) page=_1 ~]
 ::
 ::
 +$  command
   $%
       [%run-query ~]
+      [%next-page ~]
       [%show-query-state ~]
       [%clear-query-state ~]
       [%show-options ~]
@@ -72,6 +74,8 @@
   ?-  -.command
       %run-query  run-query:qo
       ::
+      %next-page  =.(page.query-input.+.state +(current-page) run-query:qo)
+      ::
       %show-query-state  render-query-state:render:qo
       ::
       %clear-query-state  clear-query-state:qo
@@ -81,7 +85,7 @@
       %show-resource  joined-groups:render:qo
       ::
       %select-resource  (put-resource:build-query-generator-input:qo command)
-      ::
+      ::<
       %disable-dms  disable-dms:qo
       ::
       %search-text  (put-search-text:build-query-generator-input:qo command)
@@ -116,6 +120,7 @@
   %+  pick
     ;~  pose
       (cold [%run-query ~] (just 'r'))
+      (cold [%next-page ~] gar)
       (cold [%show-query-state ~] dot)
       (cold [%clear-query-state ~] hep)
       (cold [%show-options ~] wut)
@@ -140,6 +145,7 @@
   :_
     %=  state
           posts  posts-from-gen-call
+          current-page  +(current-page)
         ==
   :~
   :+  %shoe  ~
@@ -310,6 +316,7 @@
     "b   enter a date to see posts before that date. date must be in format bYYYY.M.D, e.g. b2021.5.30 or b2020.11.5..13.03.00"
     "a   enter a date to see posts after that date. date must be in format aYYYY.M.D, e.g. a2021.5.30 or a2020.11.5..13.03.00"
     "r   run query"
+    ">   go to next page of search results"
     ".   show currently applied query options"
     "-   clear query\0a"
     ==
