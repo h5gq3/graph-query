@@ -151,7 +151,7 @@
   :+  %shoe  ~
   :^  %table
   ~[t+'ship' t+'date' t+'post' t+'index' t+'channel']
-  ~[8 27 35 60 30]
+  ~[15 22 55 40 30]
   ^-  (list (list dime))
     %-  zing
     %+  turn  posts-from-gen-call
@@ -165,7 +165,7 @@
         (crip i.text)
         %-  crip
         ;;(tape (reel `(list tape)`(turn text |=(i=tape (weld i "\0a"))) weld))
-        ~[p+(get-author:destructure-node i) da+(get-time-sent:destructure-node i) t+table-text ud+(get-index:destructure-node i) t+(get-channel:destructure-node -:^i)]
+        ~[p+(get-author:destructure-node i) da+(get-time-sent:destructure-node i) t+table-text t+(get-index:destructure-node i) t+(get-channel:destructure-node -:^i)]
   ==
 ::
 ++  disable-dms
@@ -288,7 +288,7 @@
     ++  get-index
       |=  i=node:g
       ?>  ?=(%& -.post.i)
-      -.index.p.post.i
+      ;;(cord p.+:(numb:enjs:format -.index.p.post.i))
     ::
     ++  get-channel
       |=  i=resource:g
