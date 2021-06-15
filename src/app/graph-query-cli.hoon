@@ -19,6 +19,7 @@
   $%
       [%run-query ~]
       [%next-page ~]
+      [%page page=@ud]
       [%show-query-state ~]
       [%clear-query-state ~]
       [%show-options ~]
@@ -76,6 +77,8 @@
       ::
       %next-page  =.(page.query-input.+.state +(current-page) run-query:qo)
       ::
+      %page  =.(page.query-input.+.state +.command run-query:qo)
+      ::
       %show-query-state  render-query-state:render:qo
       ::
       %clear-query-state  clear-query-state:qo
@@ -132,6 +135,7 @@
       (stag %select-resource dem)
       (stag %search-text ;~(pfix fas (star next)))
       (stag %author ;~(pfix sig (punt fed:ag)))
+      (stag %page ;~(pfix (just 'p') dem))
       (stag %before ;~(pfix (just 'b') (cook year when:so)))
       (stag %after ;~(pfix (just 'a') (cook year when:so)))
     ==
@@ -317,6 +321,7 @@
     "a   enter a date to see posts after that date. date must be in format aYYYY.M.D, e.g. a2021.5.30 or a2020.11.5..13.03.00"
     "r   run query"
     ">   go to next page of search results"
+    "p   go to specified page of search results"
     ".   show currently applied query options"
     "-   clear query\0a"
     ==
