@@ -1,4 +1,5 @@
 ::  /lib/pal: friendly helper library
+::  by courtesy of ~palfun-foslup
 ::
 |%
 ::  list operations
